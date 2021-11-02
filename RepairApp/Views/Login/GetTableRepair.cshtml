@@ -1,0 +1,207 @@
+﻿@model RepairApp.DataInfo.RepairInfo
+
+<style>
+
+    table {
+        background-color: white;
+        border: 1px groove black;
+        width: auto;
+        font-size: 12px;
+        table-layout: auto;
+        width: 100%
+    }
+
+    th {
+        background-color: gold;
+    }
+
+    td {
+        border: 1px solid black;
+        margin: 1%;
+        padding: 1%;
+        word-wrap:break-word;
+    }   
+
+</style>
+<div>
+    
+        
+    <div style="display:flex; align-items: flex-start; margin-left: 1%;">
+        <table>
+            <tr>
+                <th colspan="3"> Данные по кол-во позициям </th>
+            </tr>
+            <tr>
+                <th>@Html.Label("Имя ремонтника")</th>
+                <th>@Html.Label("Позиция")</th>
+                <th>@Html.Label("Количество")</th>
+            </tr>
+
+            @foreach (var item in Model.aggregatPositions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.count)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <table style="margin-left: 4%;">
+            <tr>
+                <th colspan="4"> Данные по кол-во позициям и кода ремонта </th>
+            </tr>
+
+            <tr>
+                <th>@Html.Label("Имя ремонтника")</th>
+                <th>@Html.Label("Позиция")</th>
+                <th>@Html.Label("Ремонт")</th>
+                <th>@Html.Label("Количество")</th>
+            </tr>
+
+            @foreach (var item in Model.aggregatPosReps)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.PositionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.RepairCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.count)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <table style="margin-left: 4%;">
+            <tr>
+                <th colspan="4"> Данные по кол-во позициям и кода дефекта </th>
+            </tr>
+            <tr>
+                <th>@Html.Label("Имя ремонтника")</th>
+                <th>@Html.Label("Позиция")</th>
+                <th>@Html.Label("Дефект")</th>
+                <th>@Html.Label("Количество")</th>
+            </tr>
+
+            @foreach (var item in Model.aggregatPosDefs)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.PositionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.DefectCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.count)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <table style="margin-left: 4%;">
+            <tr>
+                <th colspan="5"> Данные по кол-во позициям, кода дефекта и кода ремонта </th>
+            </tr>
+
+            <tr>
+                <th>@Html.Label("Имя ремонтника")</th>
+                <th>@Html.Label("Позиция")</th>
+                <th>@Html.Label("Дефект")</th>
+                <th>@Html.Label("Код ремонта")</th>
+                <th>@Html.Label("Количество")</th>
+            </tr>
+
+            @foreach (var item in Model.aggregatPosDefReps)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.PositionName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.DefectCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.RepairCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.count)
+                    </td>
+                </tr>
+            }
+
+        </table>
+        </div>
+        <div>
+        <table>
+            <tr>
+                <th colspan="8"> Данные по каждому ремонту </th>
+            </tr>
+            <tr>
+                <th>@Html.Label("Заказ")</th>
+                <th>@Html.Label("Barcode")</th>
+                <th>@Html.Label("Дата")</th>
+                <th>@Html.Label("Имя Ремонтника")</th>
+                <th>@Html.Label("Код Дефекта")</th>
+                <th>@Html.Label("Код ремонта")</th>
+                <th>@Html.Label("Позиция")</th>
+                <th>@Html.Label("КодОтказа")</th>
+            </tr>
+
+            @foreach (var item in Model.RepairTables)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => item.NameOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Barcode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.NameUser)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.DefectName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.RepairCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.Position)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => item.ErrorCode)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+    </div>
+
+</div>
+

@@ -1,0 +1,726 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище FASModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "FAS.dbo.Ct_OperLog" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="Ct_OperLog">
+          <Key>
+            <PropertyRef Name="TestResultID" />
+            <PropertyRef Name="StepDate" />
+          </Key>
+          <Property Name="PCBID" Type="int" />
+          <Property Name="LOTID" Type="int" />
+          <Property Name="StepID" Type="smallint" />
+          <Property Name="TestResultID" Type="tinyint" Nullable="false" />
+          <Property Name="StepDate" Type="datetime" Nullable="false" />
+          <Property Name="StepByID" Type="smallint" />
+          <Property Name="LineID" Type="tinyint" />
+          <Property Name="ErrorCodeID" Type="int" />
+          <Property Name="Descriptions" Type="nvarchar" MaxLength="250" />
+          <Property Name="SNID" Type="int" />
+        </EntityType>
+        <EntityType Name="Ct_StepResult">
+          <Key>
+            <PropertyRef Name="PCBID" />
+          </Key>
+          <Property Name="PCBID" Type="int" Nullable="false" />
+          <Property Name="StepID" Type="smallint" Nullable="false" />
+          <Property Name="TestResult" Type="tinyint" Nullable="false" />
+          <Property Name="ScanDate" Type="datetime" />
+          <Property Name="SNID" Type="int" />
+        </EntityType>
+        <EntityType Name="Ct_StepScan">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StepName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="CT_TCC_SN_MAC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SN" Type="nvarchar" MaxLength="9" StoreGeneratedPattern="Computed" />
+          <Property Name="series bar" Type="nvarchar" MaxLength="24" />
+          <Property Name="MAC_Bar" Type="nvarchar" MaxLength="17" />
+          <Property Name="MAC_Print" Type="nvarchar" MaxLength="17" />
+          <Property Name="PrintStationID" Type="tinyint" />
+          <Property Name="IsPrinted" Type="bit" />
+          <Property Name="IsPacked" Type="bit" />
+          <Property Name="PrintDate" Type="datetime" />
+          <Property Name="AssemblyWith" Type="int" />
+          <Property Name="LOTID" Type="int" />
+        </EntityType>
+        <EntityType Name="Ct_TestResult">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Result" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="FAS_DefectCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="DescriptionCode" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="FAS_Disassembly">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SerialNumber" Type="int" />
+          <Property Name="FullSTBSN" Type="varchar" MaxLength="23" />
+          <Property Name="PCBID" Type="int" Nullable="false" />
+          <Property Name="LOTID" Type="smallint" Nullable="false" />
+          <Property Name="ErrorCodeID" Type="smallint" Nullable="false" />
+          <Property Name="DisAssemblyLineID" Type="tinyint" Nullable="false" />
+          <Property Name="DisassemblyDate" Type="datetime" Nullable="false" />
+          <Property Name="DisassemblyByID" Type="smallint" />
+        </EntityType>
+        <EntityType Name="FAS_ErrorCode">
+          <Key>
+            <PropertyRef Name="ErrorCodeID" />
+          </Key>
+          <Property Name="ErrorCodeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Category" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="400" Nullable="false" />
+          <Property Name="ErrGroup" Type="tinyint" />
+          <Property Name="ErrorCode" Type="varchar" MaxLength="2" StoreGeneratedPattern="Computed" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FAS_RepairCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NameCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="DescriptionCode" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="FAS_UserGroup">
+          <Key>
+            <PropertyRef Name="UsersGroupID" />
+          </Key>
+          <Property Name="UsersGroupID" Type="tinyint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FAS_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RFID" Type="nvarchar" MaxLength="15" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="IsActiv" Type="bit" Nullable="false" />
+          <Property Name="UsersGroupID" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="M_CadenaID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="TRID" Type="nvarchar" MaxLength="14" Nullable="false" />
+          <Property Name="IsUsed" Type="bit" Nullable="false" />
+          <Property Name="LOTID" Type="int" />
+          <Property Name="IsPacked" Type="bit" />
+          <Property Name="Liter" Type="nvarchar" MaxLength="5" />
+          <Property Name="PalletNumber" Type="int" />
+          <Property Name="BoxNumber" Type="int" />
+          <Property Name="UnitNumber" Type="smallint" />
+          <Property Name="PackDate" Type="datetime" />
+          <Property Name="LabelDate" Type="date" />
+          <Property Name="PrintStationID" Type="smallint" />
+          <Property Name="Weight" Type="smallint" />
+          <Property Name="IsWeight" Type="bit" />
+          <Property Name="PrintBy" Type="smallint" />
+          <Property Name="IsReprinted" Type="bit" />
+          <Property Name="OldDateLabel" Type="date" />
+          <Property Name="LangPO" Type="nvarchar" MaxLength="50" />
+          <Property Name="Verify" Type="bit" />
+          <Property Name="UserID" Type="int" />
+          <Property Name="DateVerify" Type="datetime" />
+        </EntityType>
+        <EntityType Name="M_Repair_Table">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Barcode" Type="nvarchar" MaxLength="50" />
+          <Property Name="RapairDate" Type="datetime" />
+          <Property Name="Repairer" Type="nvarchar" MaxLength="50" />
+          <Property Name="Repair location" Type="nvarchar" MaxLength="50" />
+          <Property Name="Repair_Station_ID" Type="smallint" />
+          <Property Name="RepairCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="Position" Type="nvarchar" MaxLength="35" />
+          <Property Name="DefectCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="GeneratorCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="Description" Type="nvarchar" MaxLength="100" />
+          <Property Name="isUnitOK" Type="bit" />
+          <Property Name="ErrorCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="ModelID" Type="smallint" />
+          <Property Name="Scrap" Type="bit" />
+          <Property Name="UserID" Type="smallint" />
+        </EntityType>
+        <Association Name="FK_Ct_StepResult_Ct_StepScan">
+          <End Role="Ct_StepScan" Type="Self.Ct_StepScan" Multiplicity="1" />
+          <End Role="Ct_StepResult" Type="Self.Ct_StepResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ct_StepScan">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ct_StepResult">
+              <PropertyRef Name="StepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Ct_StepResult_Ct_TestResult">
+          <End Role="Ct_TestResult" Type="Self.Ct_TestResult" Multiplicity="1" />
+          <End Role="Ct_StepResult" Type="Self.Ct_StepResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ct_TestResult">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ct_StepResult">
+              <PropertyRef Name="TestResult" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_FAS_Users_FAS_UserGroup">
+          <End Role="FAS_UserGroup" Type="Self.FAS_UserGroup" Multiplicity="1" />
+          <End Role="FAS_Users" Type="Self.FAS_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAS_UserGroup">
+              <PropertyRef Name="UsersGroupID" />
+            </Principal>
+            <Dependent Role="FAS_Users">
+              <PropertyRef Name="UsersGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_user">
+          <End Role="FAS_Users" Type="Self.FAS_Users" Multiplicity="0..1" />
+          <End Role="M_Repair_Table" Type="Self.M_Repair_Table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAS_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="M_Repair_Table">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище FASModelContainer">
+          <EntitySet Name="Ct_StepResult" EntityType="Self.Ct_StepResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ct_StepScan" EntityType="Self.Ct_StepScan" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CT_TCC_SN_MAC" EntityType="Self.CT_TCC_SN_MAC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ct_TestResult" EntityType="Self.Ct_TestResult" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAS_DefectCode" EntityType="Self.FAS_DefectCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAS_Disassembly" EntityType="Self.FAS_Disassembly" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAS_ErrorCode" EntityType="Self.FAS_ErrorCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAS_RepairCode" EntityType="Self.FAS_RepairCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAS_UserGroup" EntityType="Self.FAS_UserGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FAS_Users" EntityType="Self.FAS_Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_CadenaID" EntityType="Self.M_CadenaID" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="M_Repair_Table" EntityType="Self.M_Repair_Table" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Ct_OperLog" EntityType="Self.Ct_OperLog" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Ct_OperLog].[PCBID] AS [PCBID], 
+    [Ct_OperLog].[LOTID] AS [LOTID], 
+    [Ct_OperLog].[StepID] AS [StepID], 
+    [Ct_OperLog].[TestResultID] AS [TestResultID], 
+    [Ct_OperLog].[StepDate] AS [StepDate], 
+    [Ct_OperLog].[StepByID] AS [StepByID], 
+    [Ct_OperLog].[LineID] AS [LineID], 
+    [Ct_OperLog].[ErrorCodeID] AS [ErrorCodeID], 
+    [Ct_OperLog].[Descriptions] AS [Descriptions], 
+    [Ct_OperLog].[SNID] AS [SNID]
+    FROM [dbo].[Ct_OperLog] AS [Ct_OperLog]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Ct_StepResult_Ct_StepScan" Association="Self.FK_Ct_StepResult_Ct_StepScan">
+            <End Role="Ct_StepScan" EntitySet="Ct_StepScan" />
+            <End Role="Ct_StepResult" EntitySet="Ct_StepResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Ct_StepResult_Ct_TestResult" Association="Self.FK_Ct_StepResult_Ct_TestResult">
+            <End Role="Ct_TestResult" EntitySet="Ct_TestResult" />
+            <End Role="Ct_StepResult" EntitySet="Ct_StepResult" />
+          </AssociationSet>
+          <AssociationSet Name="FK_FAS_Users_FAS_UserGroup" Association="Self.FK_FAS_Users_FAS_UserGroup">
+            <End Role="FAS_UserGroup" EntitySet="FAS_UserGroup" />
+            <End Role="FAS_Users" EntitySet="FAS_Users" />
+          </AssociationSet>
+          <AssociationSet Name="fk_user" Association="Self.fk_user">
+            <End Role="FAS_Users" EntitySet="FAS_Users" />
+            <End Role="M_Repair_Table" EntitySet="M_Repair_Table" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FASModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="FAS_Users">
+          <Key>
+            <PropertyRef Name="UserID" />
+          </Key>
+          <Property Name="UserID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RFID" Type="String" MaxLength="15" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActiv" Type="Boolean" Nullable="false" />
+          <Property Name="UsersGroupID" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="M_Repair_Table" Relationship="FASModel.fk_user" FromRole="FAS_Users" ToRole="M_Repair_Table" />
+          <NavigationProperty Name="FAS_UserGroup" Relationship="FASModel.FK_FAS_Users_FAS_UserGroup" FromRole="FAS_Users" ToRole="FAS_UserGroup" />
+        </EntityType>
+        <EntityContainer Name="FASEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="FAS_Users" EntityType="Self.FAS_Users" />
+          <EntitySet Name="FAS_ErrorCode" EntityType="FASModel.FAS_ErrorCode" />
+          <EntitySet Name="CT_TCC_SN_MAC" EntityType="FASModel.CT_TCC_SN_MAC" />
+          <EntitySet Name="M_CadenaID" EntityType="FASModel.M_CadenaID" />
+          <EntitySet Name="M_Repair_Table" EntityType="FASModel.M_Repair_Table" />
+          <AssociationSet Name="fk_user" Association="FASModel.fk_user">
+            <End Role="FAS_Users" EntitySet="FAS_Users" />
+            <End Role="M_Repair_Table" EntitySet="M_Repair_Table" />
+          </AssociationSet>
+          <EntitySet Name="Ct_OperLog" EntityType="FASModel.Ct_OperLog" />
+          <EntitySet Name="FAS_Disassembly" EntityType="FASModel.FAS_Disassembly" />
+          <EntitySet Name="Ct_StepResult" EntityType="FASModel.Ct_StepResult" />
+          <EntitySet Name="Ct_StepScan" EntityType="FASModel.Ct_StepScan" />
+          <AssociationSet Name="FK_Ct_StepResult_Ct_StepScan" Association="FASModel.FK_Ct_StepResult_Ct_StepScan">
+            <End Role="Ct_StepScan" EntitySet="Ct_StepScan" />
+            <End Role="Ct_StepResult" EntitySet="Ct_StepResult" />
+          </AssociationSet>
+          <EntitySet Name="Ct_TestResult" EntityType="FASModel.Ct_TestResult" />
+          <AssociationSet Name="FK_Ct_StepResult_Ct_TestResult" Association="FASModel.FK_Ct_StepResult_Ct_TestResult">
+            <End Role="Ct_TestResult" EntitySet="Ct_TestResult" />
+            <End Role="Ct_StepResult" EntitySet="Ct_StepResult" />
+          </AssociationSet>
+          <EntitySet Name="FAS_UserGroup" EntityType="FASModel.FAS_UserGroup" />
+          <AssociationSet Name="FK_FAS_Users_FAS_UserGroup" Association="FASModel.FK_FAS_Users_FAS_UserGroup">
+            <End Role="FAS_UserGroup" EntitySet="FAS_UserGroup" />
+            <End Role="FAS_Users" EntitySet="FAS_Users" />
+          </AssociationSet>
+          <EntitySet Name="FAS_DefectCode" EntityType="FASModel.FAS_DefectCode" />
+          <EntitySet Name="FAS_RepairCode" EntityType="FASModel.FAS_RepairCode" />
+        </EntityContainer>
+        <EntityType Name="FAS_ErrorCode">
+          <Key>
+            <PropertyRef Name="ErrorCodeID" />
+          </Key>
+          <Property Name="ErrorCodeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Category" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="ErrGroup" Type="Byte" />
+          <Property Name="ErrorCode" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="false" annotation:StoreGeneratedPattern="Computed" />
+        </EntityType>
+        <EntityType Name="CT_TCC_SN_MAC">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SN" Type="String" MaxLength="9" FixedLength="false" Unicode="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="series_bar" Type="String" MaxLength="24" FixedLength="false" Unicode="true" />
+          <Property Name="MAC_Bar" Type="String" MaxLength="17" FixedLength="false" Unicode="true" />
+          <Property Name="MAC_Print" Type="String" MaxLength="17" FixedLength="false" Unicode="true" />
+          <Property Name="PrintStationID" Type="Byte" />
+          <Property Name="IsPrinted" Type="Boolean" />
+          <Property Name="IsPacked" Type="Boolean" />
+          <Property Name="PrintDate" Type="DateTime" Precision="3" />
+          <Property Name="AssemblyWith" Type="Int32" />
+          <Property Name="LOTID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="M_CadenaID">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="TRID" Type="String" Nullable="false" MaxLength="14" FixedLength="false" Unicode="true" />
+          <Property Name="IsUsed" Type="Boolean" Nullable="false" />
+          <Property Name="LOTID" Type="Int32" />
+          <Property Name="IsPacked" Type="Boolean" />
+          <Property Name="Liter" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <Property Name="PalletNumber" Type="Int32" />
+          <Property Name="BoxNumber" Type="Int32" />
+          <Property Name="UnitNumber" Type="Int16" />
+          <Property Name="PackDate" Type="DateTime" Precision="3" />
+          <Property Name="LabelDate" Type="DateTime" Precision="0" />
+          <Property Name="PrintStationID" Type="Int16" />
+          <Property Name="Weight" Type="Int16" />
+          <Property Name="IsWeight" Type="Boolean" />
+          <Property Name="PrintBy" Type="Int16" />
+          <Property Name="IsReprinted" Type="Boolean" />
+          <Property Name="OldDateLabel" Type="DateTime" Precision="0" />
+          <Property Name="LangPO" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Verify" Type="Boolean" />
+          <Property Name="UserID" Type="Int32" />
+          <Property Name="DateVerify" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="M_Repair_Table">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Barcode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RapairDate" Type="DateTime" Precision="3" />
+          <Property Name="Repairer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Repair_location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Repair_Station_ID" Type="Int16" />
+          <Property Name="RepairCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Position" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="DefectCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="GeneratorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="isUnitOK" Type="Boolean" />
+          <Property Name="ErrorCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ModelID" Type="Int16" />
+          <Property Name="Scrap" Type="Boolean" />
+          <Property Name="UserID" Type="Int16" />
+          <NavigationProperty Name="FAS_Users" Relationship="FASModel.fk_user" FromRole="M_Repair_Table" ToRole="FAS_Users" />
+        </EntityType>
+        <Association Name="fk_user">
+          <End Type="FASModel.FAS_Users" Role="FAS_Users" Multiplicity="0..1" />
+          <End Type="FASModel.M_Repair_Table" Role="M_Repair_Table" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAS_Users">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="M_Repair_Table">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Ct_OperLog">
+          <Key>
+            <PropertyRef Name="TestResultID" />
+            <PropertyRef Name="StepDate" />
+          </Key>
+          <Property Name="PCBID" Type="Int32" />
+          <Property Name="LOTID" Type="Int32" />
+          <Property Name="StepID" Type="Int16" />
+          <Property Name="TestResultID" Type="Byte" Nullable="false" />
+          <Property Name="StepDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="StepByID" Type="Int16" />
+          <Property Name="LineID" Type="Byte" />
+          <Property Name="ErrorCodeID" Type="Int32" />
+          <Property Name="Descriptions" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="SNID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="FAS_Disassembly">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SerialNumber" Type="Int32" />
+          <Property Name="FullSTBSN" Type="String" MaxLength="23" FixedLength="false" Unicode="false" />
+          <Property Name="PCBID" Type="Int32" Nullable="false" />
+          <Property Name="LOTID" Type="Int16" Nullable="false" />
+          <Property Name="ErrorCodeID" Type="Int16" Nullable="false" />
+          <Property Name="DisAssemblyLineID" Type="Byte" Nullable="false" />
+          <Property Name="DisassemblyDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DisassemblyByID" Type="Int16" />
+        </EntityType>
+        <EntityType Name="Ct_StepResult">
+          <Key>
+            <PropertyRef Name="PCBID" />
+          </Key>
+          <Property Name="PCBID" Type="Int32" Nullable="false" />
+          <Property Name="StepID" Type="Int16" Nullable="false" />
+          <Property Name="TestResult" Type="Byte" Nullable="false" />
+          <Property Name="ScanDate" Type="DateTime" Precision="3" />
+          <Property Name="SNID" Type="Int32" />
+          <NavigationProperty Name="Ct_StepScan" Relationship="FASModel.FK_Ct_StepResult_Ct_StepScan" FromRole="Ct_StepResult" ToRole="Ct_StepScan" />
+          <NavigationProperty Name="Ct_TestResult" Relationship="FASModel.FK_Ct_StepResult_Ct_TestResult" FromRole="Ct_StepResult" ToRole="Ct_TestResult" />
+        </EntityType>
+        <EntityType Name="Ct_StepScan">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StepName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ct_StepResult" Relationship="FASModel.FK_Ct_StepResult_Ct_StepScan" FromRole="Ct_StepScan" ToRole="Ct_StepResult" />
+        </EntityType>
+        <Association Name="FK_Ct_StepResult_Ct_StepScan">
+          <End Type="FASModel.Ct_StepScan" Role="Ct_StepScan" Multiplicity="1" />
+          <End Type="FASModel.Ct_StepResult" Role="Ct_StepResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ct_StepScan">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ct_StepResult">
+              <PropertyRef Name="StepID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Ct_TestResult">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Result" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ct_StepResult" Relationship="FASModel.FK_Ct_StepResult_Ct_TestResult" FromRole="Ct_TestResult" ToRole="Ct_StepResult" />
+        </EntityType>
+        <Association Name="FK_Ct_StepResult_Ct_TestResult">
+          <End Type="FASModel.Ct_TestResult" Role="Ct_TestResult" Multiplicity="1" />
+          <End Type="FASModel.Ct_StepResult" Role="Ct_StepResult" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ct_TestResult">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Ct_StepResult">
+              <PropertyRef Name="TestResult" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FAS_UserGroup">
+          <Key>
+            <PropertyRef Name="UsersGroupID" />
+          </Key>
+          <Property Name="UsersGroupID" Type="Byte" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FAS_Users" Relationship="FASModel.FK_FAS_Users_FAS_UserGroup" FromRole="FAS_UserGroup" ToRole="FAS_Users" />
+        </EntityType>
+        <Association Name="FK_FAS_Users_FAS_UserGroup">
+          <End Type="FASModel.FAS_UserGroup" Role="FAS_UserGroup" Multiplicity="1" />
+          <End Type="FASModel.FAS_Users" Role="FAS_Users" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FAS_UserGroup">
+              <PropertyRef Name="UsersGroupID" />
+            </Principal>
+            <Dependent Role="FAS_Users">
+              <PropertyRef Name="UsersGroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="FAS_DefectCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="DescriptionCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="FAS_RepairCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NameCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="DescriptionCode" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище FASModelContainer" CdmEntityContainer="FASEntities">
+          <EntitySetMapping Name="FAS_Users">
+            <EntityTypeMapping TypeName="FASModel.FAS_Users">
+              <MappingFragment StoreEntitySet="FAS_Users">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="RFID" ColumnName="RFID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="IsActiv" ColumnName="IsActiv" />
+                <ScalarProperty Name="UsersGroupID" ColumnName="UsersGroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAS_ErrorCode">
+            <EntityTypeMapping TypeName="FASModel.FAS_ErrorCode">
+              <MappingFragment StoreEntitySet="FAS_ErrorCode">
+                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+                <ScalarProperty Name="ErrGroup" ColumnName="ErrGroup" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="ErrorCodeID" ColumnName="ErrorCodeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CT_TCC_SN_MAC">
+            <EntityTypeMapping TypeName="FASModel.CT_TCC_SN_MAC">
+              <MappingFragment StoreEntitySet="CT_TCC_SN_MAC">
+                <ScalarProperty Name="LOTID" ColumnName="LOTID" />
+                <ScalarProperty Name="AssemblyWith" ColumnName="AssemblyWith" />
+                <ScalarProperty Name="PrintDate" ColumnName="PrintDate" />
+                <ScalarProperty Name="IsPacked" ColumnName="IsPacked" />
+                <ScalarProperty Name="IsPrinted" ColumnName="IsPrinted" />
+                <ScalarProperty Name="PrintStationID" ColumnName="PrintStationID" />
+                <ScalarProperty Name="MAC_Print" ColumnName="MAC_Print" />
+                <ScalarProperty Name="MAC_Bar" ColumnName="MAC_Bar" />
+                <ScalarProperty Name="series_bar" ColumnName="series bar" />
+                <ScalarProperty Name="SN" ColumnName="SN" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_CadenaID">
+            <EntityTypeMapping TypeName="FASModel.M_CadenaID">
+              <MappingFragment StoreEntitySet="M_CadenaID">
+                <ScalarProperty Name="DateVerify" ColumnName="DateVerify" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Verify" ColumnName="Verify" />
+                <ScalarProperty Name="LangPO" ColumnName="LangPO" />
+                <ScalarProperty Name="OldDateLabel" ColumnName="OldDateLabel" />
+                <ScalarProperty Name="IsReprinted" ColumnName="IsReprinted" />
+                <ScalarProperty Name="PrintBy" ColumnName="PrintBy" />
+                <ScalarProperty Name="IsWeight" ColumnName="IsWeight" />
+                <ScalarProperty Name="Weight" ColumnName="Weight" />
+                <ScalarProperty Name="PrintStationID" ColumnName="PrintStationID" />
+                <ScalarProperty Name="LabelDate" ColumnName="LabelDate" />
+                <ScalarProperty Name="PackDate" ColumnName="PackDate" />
+                <ScalarProperty Name="UnitNumber" ColumnName="UnitNumber" />
+                <ScalarProperty Name="BoxNumber" ColumnName="BoxNumber" />
+                <ScalarProperty Name="PalletNumber" ColumnName="PalletNumber" />
+                <ScalarProperty Name="Liter" ColumnName="Liter" />
+                <ScalarProperty Name="IsPacked" ColumnName="IsPacked" />
+                <ScalarProperty Name="LOTID" ColumnName="LOTID" />
+                <ScalarProperty Name="IsUsed" ColumnName="IsUsed" />
+                <ScalarProperty Name="TRID" ColumnName="TRID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="M_Repair_Table">
+            <EntityTypeMapping TypeName="FASModel.M_Repair_Table">
+              <MappingFragment StoreEntitySet="M_Repair_Table">
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Scrap" ColumnName="Scrap" />
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+                <ScalarProperty Name="isUnitOK" ColumnName="isUnitOK" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GeneratorCode" ColumnName="GeneratorCode" />
+                <ScalarProperty Name="DefectCode" ColumnName="DefectCode" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="RepairCode" ColumnName="RepairCode" />
+                <ScalarProperty Name="Repair_Station_ID" ColumnName="Repair_Station_ID" />
+                <ScalarProperty Name="Repair_location" ColumnName="Repair location" />
+                <ScalarProperty Name="Repairer" ColumnName="Repairer" />
+                <ScalarProperty Name="RapairDate" ColumnName="RapairDate" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_OperLog">
+            <EntityTypeMapping TypeName="FASModel.Ct_OperLog">
+              <MappingFragment StoreEntitySet="Ct_OperLog">
+                <ScalarProperty Name="SNID" ColumnName="SNID" />
+                <ScalarProperty Name="Descriptions" ColumnName="Descriptions" />
+                <ScalarProperty Name="ErrorCodeID" ColumnName="ErrorCodeID" />
+                <ScalarProperty Name="LineID" ColumnName="LineID" />
+                <ScalarProperty Name="StepByID" ColumnName="StepByID" />
+                <ScalarProperty Name="StepDate" ColumnName="StepDate" />
+                <ScalarProperty Name="TestResultID" ColumnName="TestResultID" />
+                <ScalarProperty Name="StepID" ColumnName="StepID" />
+                <ScalarProperty Name="LOTID" ColumnName="LOTID" />
+                <ScalarProperty Name="PCBID" ColumnName="PCBID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAS_Disassembly">
+            <EntityTypeMapping TypeName="FASModel.FAS_Disassembly">
+              <MappingFragment StoreEntitySet="FAS_Disassembly">
+                <ScalarProperty Name="DisassemblyByID" ColumnName="DisassemblyByID" />
+                <ScalarProperty Name="DisassemblyDate" ColumnName="DisassemblyDate" />
+                <ScalarProperty Name="DisAssemblyLineID" ColumnName="DisAssemblyLineID" />
+                <ScalarProperty Name="ErrorCodeID" ColumnName="ErrorCodeID" />
+                <ScalarProperty Name="LOTID" ColumnName="LOTID" />
+                <ScalarProperty Name="PCBID" ColumnName="PCBID" />
+                <ScalarProperty Name="FullSTBSN" ColumnName="FullSTBSN" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_StepResult">
+            <EntityTypeMapping TypeName="FASModel.Ct_StepResult">
+              <MappingFragment StoreEntitySet="Ct_StepResult">
+                <ScalarProperty Name="SNID" ColumnName="SNID" />
+                <ScalarProperty Name="ScanDate" ColumnName="ScanDate" />
+                <ScalarProperty Name="TestResult" ColumnName="TestResult" />
+                <ScalarProperty Name="StepID" ColumnName="StepID" />
+                <ScalarProperty Name="PCBID" ColumnName="PCBID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_StepScan">
+            <EntityTypeMapping TypeName="FASModel.Ct_StepScan">
+              <MappingFragment StoreEntitySet="Ct_StepScan">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StepName" ColumnName="StepName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ct_TestResult">
+            <EntityTypeMapping TypeName="FASModel.Ct_TestResult">
+              <MappingFragment StoreEntitySet="Ct_TestResult">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAS_UserGroup">
+            <EntityTypeMapping TypeName="FASModel.FAS_UserGroup">
+              <MappingFragment StoreEntitySet="FAS_UserGroup">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="UsersGroupID" ColumnName="UsersGroupID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAS_DefectCode">
+            <EntityTypeMapping TypeName="FASModel.FAS_DefectCode">
+              <MappingFragment StoreEntitySet="FAS_DefectCode">
+                <ScalarProperty Name="DescriptionCode" ColumnName="DescriptionCode" />
+                <ScalarProperty Name="NameCode" ColumnName="NameCode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FAS_RepairCode">
+            <EntityTypeMapping TypeName="FASModel.FAS_RepairCode">
+              <MappingFragment StoreEntitySet="FAS_RepairCode">
+                <ScalarProperty Name="DescriptionCode" ColumnName="DescriptionCode" />
+                <ScalarProperty Name="NameCode" ColumnName="NameCode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,270 @@
+﻿@model RepairApp.DataInfoPCB
+
+@if (Model != null)
+{
+ @*<div style="display: flex">
+    <a>История отказов</a>  
+     <a>Этапы сканирования</a>
+     <a>История ремонта</a>
+ </div>*@
+<div style="display:flex; align-items: flex-start">
+    @if (Model.ListDissambles != null)
+    {
+        if (Model.ListDissambles.Count != 0)
+        {
+
+            <table class="TabeInfo">
+                <tr>
+                    <th colspan="2">История отказов</th>
+                </tr>
+                <tr>
+                    <th>
+                        Отказ
+                    </th>
+                    <th>
+                        Дата отказа
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.ListDissambles)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Date)
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        }
+    }
+    @if (Model.ListOperLogs != null)
+    {
+        if (Model.ListOperLogs.Count != 0)
+        {
+
+            <table class="TabeInfo">
+                <tr>
+                    <th colspan="4">Этапы сканирования платы</th>
+                </tr>
+                <tr>
+                    <th>
+                        Этап
+                    </th>
+                    <th>
+                        Результат
+                    </th>
+                    <th>
+                        ДатаЭтапа
+                    </th>
+                    <th>
+                        Пользователь
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.ListOperLogs)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameStage)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameResult)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateStage)
+                        </td>
+                        <td>
+                            @if (item.UserStage != null)
+                            {
+                                @Html.DisplayFor(modelItem => item.UserStage)
+                            }
+                            else if (item.UserStage == null)
+                            {
+                                @Html.DisplayFor(modelItem => item.Description)
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        }
+    }
+    @if (Model.AOILists != null)
+    {
+        if (Model.AOILists.Count != 0)
+        {
+            <table class="TabeInfo">
+
+                <tr>
+                    <th colspan="5"> Данные с AOI </th>
+                </tr>
+                <tr>
+                    <th>
+                        Дата AOI
+                    </th>
+                    <th>
+                        Ремонтник SMT
+                    </th>
+                    <th>
+                        Результат AOI
+                    </th>
+                    <th>
+                        Результат проверки AOI
+                    </th>
+                    <th>
+                        Позиция
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.AOILists)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.DateAOI)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameAOI)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NameResutAOI)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.NamePosition)
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+        }
+    }
+    </div>
+    <div style="margin-top: 15px">
+    @if (Model.RepairLists != null)
+    {
+        if (Model.RepairLists.Count != 0)
+        {
+            <table class="TabeInfo">
+                <tr>
+                    <th colspan="9">История ремонта платы</th>
+                </tr>
+                <tr>
+                    <th>
+                        Дата ремонта
+                    </th>
+                    <th>
+                        Ремонтник
+                    </th>
+                    <th>
+                        Результат ремонта
+                    </th>
+                    <th>
+                        Код Отказа
+                    </th>
+                    <th>
+                        Позиция
+                    </th>
+                    <th>
+                        Код Ремонта
+                    </th>
+                    <th>
+                        Код Дефекта
+                    </th>
+                    <th>
+                        Код Виновника
+                    </th>
+                    <th>
+                        Примечание
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.RepairLists)
+                {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RepairDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RepairName)
+                </td>
+                <td>
+                    @if ((bool)item.RepairResult)
+                    {
+                        @Html.DisplayFor(modelItem => item.repOK);
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.repNOK);
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RapairError)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RepaitPosition)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RepairCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DefectCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.GenerateCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+            </tr>
+                }
+
+            </table>
+        }
+
+    }
+    </div>
+
+
+
+}
+
+
+<style>
+
+    th {
+        background-color: yellow;
+    }
+  /*  table {
+     
+    }*/
+
+    .TabeInfo {
+        background-color: white;
+        font-size: 12px;
+        margin: 10px;
+        table-layout: auto;
+        width:100%
+    }
+
+    tr {
+        border: 1px solid black;
+        
+        padding: 3px;
+    }
+
+    td {
+        border: 1px solid black;
+    }
+
+    th {
+        text-align: center;
+        padding: 5px;
+    }
+</style>

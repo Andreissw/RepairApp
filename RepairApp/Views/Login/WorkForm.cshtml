@@ -1,0 +1,776 @@
+﻿@model RepairApp.LoginData
+<div class="two"><h1> Приложение по ремонту</h1></div>
+<head>    
+    <script src="~/Scripts/ajaxlibsjquery3.2.1jquery.js"></script>    
+    <script src="~/Scripts/maxcdn.bootstrapcdn.combootstrap3.3.7jsbootstrap.min.js"></script>    
+    <script src="~/Scripts/cdnjs.cloudflare.comajaxlibsbootstrap-select1.12.2jsbootstrap-select.min.js"></script>
+    <script src="jquery.autocomplete.js"></script>    
+    <link href="~/Content/ajax.googleapis.comajaxlibsjqueryui1.12.1themessmoothnessjquery-ui.css" rel="stylesheet"/>    
+    <script src="~/Scripts/ajax.googleapis.comajaxlibsjqueryui1.12.1jquery-ui.min.js"></script>
+
+</head>
+
+
+@{
+
+    ViewBag.Title = "RapairStation";
+    int ussser = Model.UserID;
+}
+
+
+<div>
+
+    <ol class="rounded">
+        <li><a>Пользователь - @Model.UserName</a></li>
+        <li><a>IP Адрес клиента<nav id="IP">@Model.MachineName</nav>  </a></li>
+        <li id="timer" style="margin-left: 20px; font-size: 36px;"></li>
+    </ol>
+
+</div>
+
+<br />
+
+<div id="dec">
+    @Html.TextBoxFor(model => model.Decode, "", new { @id = "decode", @style = "width: 1800px; font-size: 12px", autocomplete = "off", autofocus = "on", placeholder = "Отсканируйте Decode" })
+    @Html.Label("Очистить поле", new { @id = "Clbt", @class = "btn btn-secondary btn-sm" })
+</div>
+
+<div class="blocked" style="padding-top: 15px;">
+
+    <div style="display:block">
+        <div style="display:flex">
+            <table style="border: 1px solid black">
+
+                <tr>
+                    <td class="First"> Код Отказа </td>
+                    @*<td>  @Html.TextBoxFor(c => c.ErrorCode, new { @Value = Model.CurrentError, @class = "myclass", @style = "width: 100px", id = "er" }) </td>*@
+                    <td> @Html.DropDownListFor(c =>c.ErrorCode, Model.ListErrors ,new { @Value = "",  @style = "width: 100px" , id = "er" })</td>
+                </tr>
+
+                <tr>
+                    <td class="First"> Код Дефекта</td>
+                    @*<td> @Html.TextBoxFor(c => c.DefectCode, new { @Value = "", @class = "myclass", @style = "width: 100px", id = "def" }) </td>*@
+                    <td> @Html.DropDownListFor(c => c.DefectCode, Model.ListDefects, new { @Value = "",  @style = "width: 100px", id = "def" })</td>
+                </tr>
+                <tr>
+                    <td class="First"> Код Ремонта </td>
+                    @*<td>  @Html.TextBoxFor(c => c.ReapirCode, new { @Value = "", @class = "myclass", @style = "width: 100px", id = "rep" }) </td>*@
+                    <td> @Html.DropDownListFor(c => c.ReapirCode, Model.ListRepair, new { @Value = "", @style = "width: 100px", id = "rep" })</td>
+                </tr>
+                <tr>
+                    <td class="First"> Generator Code </td>
+                    @*<td>@Html.TextBoxFor(c => c.GenerateCode, new { @Value = "", @class = "myclass", @style = "width: 100px", id = "gen" }) </td>*@
+                    <td> @Html.DropDownListFor(c => c.GenerateCode, Model.ListGenerator, new { @Value = "",  @style = "width: 100px", id = "gen" })</td>
+                </tr>
+
+            </table>
+
+            <table id="MyTable2" style="border: 1px solid black; padding-left: 200px">
+                <tr>
+                    <td><a>Позиции</a></td>
+                </tr>
+                <tr> <td>@Html.Label("Добавить позицию", new { @class = "btn-success", @style = "font-size: 15px; width: 100%;  padding: 3px;", id = "btnAdd" }) @Html.TextBoxFor(c => c.ListName, new { @id = "List", @style = "width: 100%" })  </td> </tr>
+
+                <tr> <td>@Html.ListBoxFor(x => x.ListPosition, new SelectList(new List<string>()), new { id = "LP", @style = "width: 100%" })  @Html.Label("Удалить позицию", new { @class = "btn-danger", @style = "font-size: 15px; width: 100%; padding: 3px; ", id = "minus" }) </td> </tr>
+
+                <tr>
+                    <td><a>Описание ремонта</a></td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.TextAreaFor(x => x.ListName, new { id = "Decription", @style = "width: 100%" })
+                    </td>
+                </tr>
+
+            </table>
+        </div>
+
+        <div class="Remont">
+            @Html.Label("Оттремонтиирован", new { @id = "repBT", @class = "btn btn-success", @style = "height:100%" })
+            @Html.Label("Возврат без ремонта", new { @id = "yBT", @class = "btn btn-warning", @style = "height:100%" })
+            @Html.Label("UNIT is not ok", new { @id = "nokBT", @class = "btn btn-danger", @style = "height:100%" })
+            @Html.Label("Брак на списание", new { @id = "nokBT", @class = "btn btn-dark", @style = "height:100%" })
+        </div>
+
+        <div class="OTK">
+            @Html.Label("[ОТК] Подтверждение ремонта ", new {  @style = "width:100%; text-align:center; " })
+            @Html.Label("Подтвердить ремонт", new { @id = "OTK_OK", @class = "btn btn-success", @style = "width:95%; text-align:center;" })
+            @Html.Label("Не подтвердить ремонт", new { @id = "OTK_NOK", @class = "btn btn-danger", @style = "width:95%; text-align:center;" })
+        </div>
+
+        
+    </div>
+
+  
+    <div id="lister"> </div>
+
+</div>
+
+<!--<div style="margin-top:1%;">-->
+    @*@Html.Action("GetDataRepair");*@
+<!--</div>-->
+
+
+<style>
+
+    .Remont {
+        visibility: hidden;
+        border: 1px solid black;
+        padding: 1%;
+        margin: 1%;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    .OTK {
+        visibility: hidden;
+        padding:2%;
+        margin: 1%;
+        display:block;
+        align-items:flex-start;
+        border: 1px solid black;
+        
+    }
+
+    #lister {
+        margin-left: 10px;
+    }
+
+    .blocked {
+        pointer-events: none;
+        display: flex;
+        align-items: flex-start;
+    }
+
+    #decode {
+        pointer-events: auto;
+    }
+
+    #dec {
+        display: flex;
+        margin-left: 10px;
+        align-content: center;
+        background-color: darkgrey
+    }
+
+
+    body {
+        background-color: lightgray;
+    }
+
+    td {
+        padding: 5px;
+    }
+
+    .First {
+        width: 150px;
+        padding: 10px;
+    }
+
+    .left {
+        padding-left: 10px;
+    }
+
+    .btn {
+        margin: 5px;
+        border: 3px;
+    }
+</style>
+
+
+
+<script type="text/javascript">
+
+
+        $(document).ready(function () { //Выпадающий список позиций
+            CheckUser();
+            //GetlistError($("#er"));
+            //Getlistrepcode($("#rep"));
+            GetListPos($("#List"));
+            //GetDefectCode($("#def"));
+            //GenerateCode($("#gen"));
+            $("#Clbt").click(function () { clear(); });
+            setInterval('GetTime()', 1000);
+
+
+        });
+
+
+        function CheckUser() {
+            var userid = @Model.UserID;
+             $.ajax({
+                     url: '@Url.Action("CheckGroupUser", "Login")',
+                 dataType: "json",
+                 data: {UserID: userid},
+                     success: function (data) {
+                         if (data == true) {
+                             $(".OTK").css('visibility', 'visible');
+                         }
+                         else {
+                             $(".Remont").css('visibility', 'visible');
+                         }
+                     },
+                     error: function (xhr, status, error) {
+
+                     }
+             })
+        }
+
+        function GetTime() {
+             $.ajax({
+                     url: '@Url.Action("GetTime", "Login")',
+                     dataType: "json",
+                     success: function (data) {
+                         $("#timer").html(data);
+                     },
+                     error: function (xhr, status, error) {
+
+                     }
+             })
+        }
+
+        function clear() {
+            $(".blocked").css('pointer-events', 'none');
+            $("#decode").css('pointer-events', 'auto');
+            $("#decode").val('');
+            $("#er").val('');
+            $("#rep").val('');
+            $("#List").val('');
+            $("#Decription").val('');
+            $("#def").val('');
+            $("#gen").val('');
+            $("#LP option").remove();
+            $("#decode").select();
+            GetDataDissamble();
+        }
+
+
+
+            $("#decode").keydown(function (d) {
+                if (d.keyCode == 13) {
+
+                     $.ajax({
+                     url: '@Url.Action("GetDecode", "Login")',
+                     dataType: "json",
+                         data: { decode: $("#decode").val() },
+                         success: function (data) {
+                             //alert(data.Decode + data.errorcode);
+                             if (data.Decode == "") {
+                                 alert($("#decode").val() + " Такой номер в базе не найден!");
+                                 $("#decode").val('');
+                                 $("#decode").select();
+                                 return;
+                             }
+
+                             if (data.errorcode != "") {
+                                 $("#er").val(data.errorcode);
+                             }
+
+                             GetDataDissamble();
+
+                             $(".blocked").css('pointer-events', 'auto');
+                             $("#decode").css('pointer-events', 'none');
+                             //$("#er").select();
+                     },
+                     error: function (xhr, status, error) {
+                         alert($("#decode").val() + " Такой номер в базе не найден!");
+                         $("#decode").val('');
+                     }
+                      })
+
+
+                }
+            });
+
+     $(".OTK").click(function (d) {
+                var bt = d.target.textContent;
+                var def = $("#def").val();
+                var Decription = $("#Decription").val();
+
+                var list = [];
+                $("#LP").children().each(function () {
+                    list.push($(this).val());
+                });
+
+               if (bt == "Не подтвердить ремонт") {
+
+                    if (Decription == "") {
+                        $("#Decription").select();
+                        return;
+                   }
+
+
+                }
+
+                 var userid = @Model.UserID;
+
+
+
+                //list = JSON.stringify(list);
+                list = list.toString();
+
+                $.ajax({
+                    url: '@Url.Action("AddBaseOTK", "Login")',
+                    dataType: "json",
+                    data: {
+                        BT: bt,
+                        er: $("#er").val(),
+                        def: $("#def").val(),
+                        gen: $("#gen").val(),
+                        Desc: $("#Decription").val(),
+                        UserID: userid,
+                        Decode: $("#decode").val(),
+                        rep: $("#rep").val(),
+                        pos: list,
+                        IP: $("#IP").text(),
+                    },
+                    success: function (data) {
+                        if (data == "ok") {
+                            clear();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+
+                    }
+
+
+                });
+            });
+
+
+           $(".Remont").click(function (d) {
+                var bt = d.target.textContent;
+                var def = $("#def").val();
+                var rep = $("#rep").val();
+                var gen = $("#gen").val();
+
+                var list = [];
+                $("#LP").children().each(function () {
+                    list.push($(this).val());
+                });
+                list = list.toString();
+
+                if (bt == "Оттремонтиирован") {
+
+                    if (def == "") {
+                        alert('Не выбран дефект!');
+                        $("#def").select();
+                        return;
+                    }
+                    if (rep == "") {
+                        alert('Не выбран код ремонта!');
+                        $("#rep").select();
+                        return;
+                    }
+                    if (gen == "") {
+                        alert('Не выбран GeneratorCode');
+                        $("#gen").select();
+                        return;
+                    }
+                    if (list == "") {
+                        alert('Не выбрана позиция');
+                        $("#List").select();
+                    }
+                }
+                else if (bt == "UNIT is not ok" || bt == "Брак на списание") {
+                    if (def == "") {
+                        alert('Не выбран дефект!');
+                        $("#def").select();
+                        return;
+                    }
+                    if (rep == "") {
+                        alert('Не выбран код ремонта!');
+                        $("#rep").select();
+                        return;
+                    }
+                }
+
+                var userid = @Model.UserID;
+
+
+                $.ajax({
+                    url: '@Url.Action("AddBase", "Login")',
+                    dataType: "json",
+                    data: {
+                        BT: bt,
+                        er: $("#er").val(),
+                        def: $("#def").val(),
+                        gen: $("#gen").val(),
+                        Desc: $("#Decription").val(),
+                        UserID: userid,
+                        Decode: $("#decode").val(),
+                        rep: $("#rep").val(),
+                        pos: list,
+                        IP: $("#IP").text()
+                    },
+                    success: function (data) {
+                        if (data == "ok") {
+                            clear();
+                        }
+                    },
+                    error: function (xhr, status, error) {
+
+                    }
+
+
+                });
+            });
+
+
+
+            //$("#er").focusout(function () {
+            //    CheckError();
+            //});
+
+            // $("#def").focusout(function () {
+            //        CheckDef();
+            //});
+
+
+            //$("#rep").focusout(function (d) {
+            //        CheckRep();
+            //});
+
+            //$("#gen").focusout(function (d) {
+            //   CheckGen();
+            //});
+
+            $("#minus").click(function () {
+                    $("#LP > option:selected").each(function () {
+                        $(this).remove();
+                    });
+            });
+
+        //});
+
+          function GetDataDissamble() {
+            $.ajax({
+                url: '@Url.Action("GetListError", "Login")',
+                dataType: "html",
+                data: { Decode: $("#decode").val() },
+                success: function (data) {
+                    $("#lister").html(data);
+                },
+                error: function (xhr, status, error) {
+
+                }
+            })
+        }
+
+        @*function CheckError() {
+            $.ajax({
+                url: '@Url.Action("CheckError", "Login")',
+                data: { content: $("#er").val() },
+                success: function (data) {
+                    if (data != "") {
+                        $("#er").val(data);
+                        //$("#def").select();
+                        return;
+                    }
+                    $("#er").val('');
+
+                },
+                error: function (xhr, status, error) {
+
+                }
+            })
+        }*@
+
+        @*function CheckDef() {
+            $.ajax({
+                url: '@Url.Action("CheckDefect", "Login")',
+                dataType: "json",
+                data: { content: $("#def").val() },
+                success: function (data) {
+                    if (data != "") {
+                        $("#def").val(data);
+                        //$("#rep").select();
+                        return;
+                    }
+                    $("#def").val('');
+                },
+                error: function (xhr, status, error) {
+                    $("#def").val('');
+                    //$("#def").select();
+                }
+            })
+        }*@
+
+        //function CheckGen() {
+        //    var text = $("#gen").val();
+        //      if (text != "01" & text != "09") {
+        //          $("#gen").val('');
+        //          //$("#gen").select();
+        //      }
+        //      else {
+        //          $("#gen").val(text);
+        //          $("#List").select();
+        //      }
+        //}
+
+        function CheckPosition() {
+            $.ajax({
+                url: '@Url.Action("CheckPosition", "Login")',
+                dataType: "json",
+                data: { content: $("#List").val() },
+                success: function (data) {
+                    $("#List").val(data);
+                    return "true";
+
+                },
+                error: function (xhr, status, error) {
+                    $("#List").val('');
+                    $("#List").select();
+                    return "false";
+
+                }
+            })
+        }
+
+        @*function CheckRep() {
+            $.ajax({
+                url: '@Url.Action("CheckRep", "Login")',
+                dataType: "json",
+                data: { content: $("#rep").val() },
+                success: function (data) {
+                    if (data != "") {
+                        $("#rep").val(data);
+                        //$("#gen").select();
+                        return;
+                    }
+                    $("#rep").val('');
+                },
+                error: function (xhr, status, error) {
+                    $("#rep").val('');
+                    //$("#rep").select();
+                }
+            })
+        }*@
+
+        @*function GetlistError(obj) {
+            obj.autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: '@Url.Action("GetErrorCode", "Login")',
+                        dataType: "json",
+                        data: { filter: obj.val() },
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return { label: item.Name, value: item.Name };
+                            }));
+                        },
+                        error: function (xhr, status, error) {
+                            alert("Error");
+                        }
+
+                    });
+                }
+            });
+        }*@
+
+        //function GenerateCode(obj) {
+
+        //    var list = [ "01", "09"];
+        //    obj.autocomplete({
+        //        source: list
+        //    });
+        //}
+
+        function Getlistrepcode(obj) {
+                obj.autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Action("GetRepCode", "Login")',
+                            dataType: "json",
+                            data: { filter: obj.val() },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.Name, value: item.Name };
+                                }));
+                            },
+                            error: function (xhr, status, error) {
+                                alert("Error");
+                            }
+
+                        });
+
+                    }
+                });
+        }
+
+        function GetListPos(obj) {
+                obj.autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Action("GetPosition", "Login")',
+                            dataType: "json",
+                            data: { filter: obj.val() },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.Name, value: item.Name };
+                                }));
+                            },
+                            error: function (xhr, status, error) {
+                                alert("Error");
+                            }
+
+                        });
+
+                    }
+                });
+        }
+
+        function GetDefectCode(obj) {
+                obj.autocomplete({
+                    source: function (request, response) {
+                        $.ajax({
+                            url: '@Url.Action("GerDefect", "Login")',
+                            dataType: "json",
+                            data: { filter: obj.val() },
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return { label: item.Name, value: item.Name };
+                                }));
+                            },
+                            error: function (xhr, status, error) {
+                                alert("Error");
+                            }
+
+                        });
+
+                    }
+                });
+        }
+
+        $('#btnAdd').click(function () {
+            AddPosition();
+        });
+        $('#List').keydown(function (k) {
+            if (k.keyCode == 13) {
+                AddPosition();
+            }
+        });
+
+        function AddPosition() {
+
+            var positionName = $('#List').val();
+            if (positionName != '') {
+
+                $('#LP').contents().each(function (i, k) {
+                    if (k.textContent == positionName) {
+                        alert(positionName + " уже добавлен");
+                        $('#List').val('');
+                        $('#List').select();
+                        throw new Error(positionName + " Был добавлен ранее");
+
+                    }
+
+                });
+
+                 $.ajax({
+                    url: '@Url.Action("CheckPosition", "Login")',
+                    dataType: "json",
+                    data: { content: $("#List").val() },
+                    success: function (data) {
+                        $("#List").val(data);
+                        $('#LP').append('<option>' + positionName + '</option>');
+                        $('#List').val('');
+                        $('#List').select();
+
+                    },
+                    error: function (xhr, status, error) {
+                        $("#List").val('');
+                        $("#List").select();
+                        throw new Error("Такой позиции не существует");
+                    }
+                })
+
+
+                }
+
+        }
+
+</script>
+
+<style>
+
+
+    .rounded {
+        counter-reset: li;
+        list-style: none;
+        font: 14px "Trebuchet MS", "Lucida Sans";
+        padding-left: 25px;
+        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+    }
+
+        .rounded a {
+            position: relative;
+            display: block;
+            padding: .4em .4em .4em 2em;
+            margin: .5em 0;
+            background: #DAD2CA;
+            color: #444;
+            text-decoration: none;
+            border-radius: .3em;
+            transition: .3s ease-out;
+        }
+
+            .rounded a:hover {
+                background: #E9E4E0;
+            }
+
+                .rounded a:hover:before {
+                    transform: rotate(360deg);
+                }
+
+            .rounded a:before {
+                content: counter(li);
+                counter-increment: li;
+                position: absolute;
+                left: -1.3em;
+                top: 50%;
+                margin-top: -1.3em;
+                background: #8FD4C1;
+                height: 2em;
+                width: 2em;
+                line-height: 2em;
+                border: .3em solid white;
+                text-align: center;
+                font-weight: bold;
+                border-radius: 2em;
+                transition: all .3s ease-out;
+            }
+
+    .two {
+        background: #E4E5D2;
+        padding: 50px 20px;
+        text-align: center;
+    }
+
+        .two h1 {
+            font-family: 'Open Sans', sans-serif;
+            position: relative;
+            color: #5C2610;
+            font-size: 3em;
+            font-weight: normal;
+            line-height: 1;
+            padding: 10px 0;
+            margin: 0;
+            display: inline-block;
+        }
+
+            .two h1:before {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%,-50%);
+                width: 80%;
+                height: 200%;
+                border-radius: 50%/30%;
+                border: 6px solid #5C2610;
+                border-left-color: transparent;
+                border-right-color: transparent;
+            }
+</style>

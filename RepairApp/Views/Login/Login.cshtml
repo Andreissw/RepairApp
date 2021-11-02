@@ -1,0 +1,42 @@
+﻿@model LoginData
+
+
+@if (TempData["Er"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Er"]
+        </div>
+    }
+    else
+    {
+
+    }
+
+<div class="alert-info">
+
+        @Html.Label("Введите пароль для входа", new  { @class = "form-label" })
+        @using (Html.BeginForm("GetUserID", "Login", FormMethod.Post))
+        {
+            @Html.TextBoxFor(model => model.RFID, "", new { autocomplete = "off", autofocus = "on", placeholder = "Password", @type = "password" })
+            <input type="submit"  value="Войти"/>
+        }
+
+</div>
+
+@*<div style="margin-top:1%;">
+    @Html.Action("GetDataRepair");
+</div>*@
+
+
+
+
+
+
+
+
+
+
+
+
+
+

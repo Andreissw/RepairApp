@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище PSIGMA.FLATModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="TRC_DefectCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DefectCodeName" Type="nvarchar" MaxLength="150" />
+          <Property Name="DefectCodeDescription" Type="nvarchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="TRC_RepairCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RepairCodeName" Type="nvarchar" MaxLength="150" />
+          <Property Name="RepairCodeDescription" Type="nvarchar" MaxLength="400" />
+        </EntityType>
+        <EntityType Name="TRC_RepairPosition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ModelName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PositionName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TRC_Unit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Barcode" Type="nvarchar" MaxLength="400" />
+          <Property Name="SerialNumber" Type="nvarchar" MaxLength="200" />
+          <Property Name="ProductionOrderID" Type="int" />
+          <Property Name="ProductID" Type="int" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="ProductionAreaID" Type="int" />
+          <Property Name="StateCodeID" Type="int" />
+          <Property Name="StateCodeDate" Type="datetime" />
+          <Property Name="StateCodeBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="RegDate" Type="datetime" />
+          <Property Name="RegBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsScrap" Type="bit" />
+          <Property Name="AssemblyNumber" Type="nvarchar" MaxLength="100" />
+          <Property Name="LOTID" Type="int" />
+          <Property Name="ModelID" Type="int" />
+        </EntityType>
+        <EntityContainer Name="Хранилище PSIGMAFLATModelContainer">
+          <EntitySet Name="TRC_DefectCode" EntityType="Self.TRC_DefectCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRC_RepairCode" EntityType="Self.TRC_RepairCode" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRC_RepairPosition" EntityType="Self.TRC_RepairPosition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TRC_Unit" EntityType="Self.TRC_Unit" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PSIGMA.FLATModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="TRC_DefectCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DefectCodeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="DefectCodeDescription" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TRC_RepairCode">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RepairCodeName" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="RepairCodeDescription" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="TRC_DefectCode" EntityType="Self.TRC_DefectCode" />
+          <EntitySet Name="TRC_RepairCode" EntityType="Self.TRC_RepairCode" />
+          <EntitySet Name="TRC_RepairPosition" EntityType="PSIGMA.FLATModel.TRC_RepairPosition" />
+          <EntitySet Name="TRC_Unit" EntityType="PSIGMA.FLATModel.TRC_Unit" />
+        </EntityContainer>
+        <EntityType Name="TRC_RepairPosition">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ModelName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PositionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TRC_Unit">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Barcode" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="SerialNumber" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ProductionOrderID" Type="Int32" />
+          <Property Name="ProductID" Type="Int32" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="ProductionAreaID" Type="Int32" />
+          <Property Name="StateCodeID" Type="Int32" />
+          <Property Name="StateCodeDate" Type="DateTime" Precision="3" />
+          <Property Name="StateCodeBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RegDate" Type="DateTime" Precision="3" />
+          <Property Name="RegBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsScrap" Type="Boolean" />
+          <Property Name="AssemblyNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LOTID" Type="Int32" />
+          <Property Name="ModelID" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище PSIGMAFLATModelContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="TRC_DefectCode">
+            <EntityTypeMapping TypeName="PSIGMA.FLATModel.TRC_DefectCode">
+              <MappingFragment StoreEntitySet="TRC_DefectCode">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DefectCodeName" ColumnName="DefectCodeName" />
+                <ScalarProperty Name="DefectCodeDescription" ColumnName="DefectCodeDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRC_RepairCode">
+            <EntityTypeMapping TypeName="PSIGMA.FLATModel.TRC_RepairCode">
+              <MappingFragment StoreEntitySet="TRC_RepairCode">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RepairCodeName" ColumnName="RepairCodeName" />
+                <ScalarProperty Name="RepairCodeDescription" ColumnName="RepairCodeDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRC_RepairPosition">
+            <EntityTypeMapping TypeName="PSIGMA.FLATModel.TRC_RepairPosition">
+              <MappingFragment StoreEntitySet="TRC_RepairPosition">
+                <ScalarProperty Name="PositionName" ColumnName="PositionName" />
+                <ScalarProperty Name="ModelName" ColumnName="ModelName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TRC_Unit">
+            <EntityTypeMapping TypeName="PSIGMA.FLATModel.TRC_Unit">
+              <MappingFragment StoreEntitySet="TRC_Unit">
+                <ScalarProperty Name="ModelID" ColumnName="ModelID" />
+                <ScalarProperty Name="LOTID" ColumnName="LOTID" />
+                <ScalarProperty Name="AssemblyNumber" ColumnName="AssemblyNumber" />
+                <ScalarProperty Name="IsScrap" ColumnName="IsScrap" />
+                <ScalarProperty Name="RegBy" ColumnName="RegBy" />
+                <ScalarProperty Name="RegDate" ColumnName="RegDate" />
+                <ScalarProperty Name="StateCodeBy" ColumnName="StateCodeBy" />
+                <ScalarProperty Name="StateCodeDate" ColumnName="StateCodeDate" />
+                <ScalarProperty Name="StateCodeID" ColumnName="StateCodeID" />
+                <ScalarProperty Name="ProductionAreaID" ColumnName="ProductionAreaID" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="ProductionOrderID" ColumnName="ProductionOrderID" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SerialNumber" />
+                <ScalarProperty Name="Barcode" ColumnName="Barcode" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

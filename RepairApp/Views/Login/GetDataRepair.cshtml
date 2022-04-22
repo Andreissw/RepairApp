@@ -1,0 +1,127 @@
+﻿@model RepairApp.DataInfo.RepairInfo
+@{
+
+    ViewBag.Title = "RapairStation";   
+}
+<head>
+    <script src="~/Scripts/ajaxlibsjquery3.2.1jquery.js"></script>
+    <script src="~/Scripts/maxcdn.bootstrapcdn.combootstrap3.3.7jsbootstrap.min.js"></script>
+    <script src="~/Scripts/cdnjs.cloudflare.comajaxlibsbootstrap-select1.12.2jsbootstrap-select.min.js"></script>
+    <script src="jquery.autocomplete.js"></script>
+    <link href="~/Content/ajax.googleapis.comajaxlibsjqueryui1.12.1themessmoothnessjquery-ui.css" rel="stylesheet" />
+    <script src="~/Scripts/ajax.googleapis.comajaxlibsjqueryui1.12.1jquery-ui.min.js"></script>
+
+</head>
+
+<body>
+
+    <div class="buttonss">
+
+        <div class="dates">
+            <div style="display: flex;align-items:flex-start">
+                <p>ОТ</p>
+                <input type="date" class="dates" id="date_st">
+                <span></span>
+                <input type="time" class="dates" id="time_st">
+            </div>
+
+            <div style="display: flex; align-items:flex-start" >
+                <p>ДО</p>
+                <input type="date" class="dates" id="date_end">
+                <span></span>
+                <input type="time" class="dates" id="time_end">
+            </div>
+        </div>
+
+        <div style="display: block;align-items:flex-start ; margin-top:1%;">
+            <p>Выберите ремонтника</p>
+            @Html.DropDownListFor(c => c.NameUsers, Model.NameUsers, new { @id = "ListName", @style = "width:100%; font-size: 15px;" })
+        </div>
+
+        <div style="display: block;align-items:flex-start; margin-top:1%;">
+            <p>Выберите заказ</p>
+            @Html.DropDownListFor(c => c.Orders, Model.Orders, new { @id = "ListOrder", @style = "width:100%; font-size: 15px;"  })
+        </div>
+
+        <div>
+            <input id="btClick" type="button" style="font-size:20px;  margin-top:1%; width:100%; background-color: lightgreen" value="Сформировать Отчёт" />
+        </div>
+
+    </div>
+    
+    <div id="Table">  </div>
+</body>
+
+
+<script>
+
+    $(document).ready(function () {   
+        var d = new Date();
+        $("#date_st").val(d.toISOString().substring(0, 10));
+        $("#time_st").val('08:00')
+
+        d.setDate(d.getDate() + 1);
+
+        $("#date_end").val(d.toISOString().substring(0, 10));
+        $("#time_end").val('00:00');      
+
+    });
+
+
+    $("#btClick").click(function (d) {
+                    $("#Table").html('<p style="background-color:yellow; font-size: 50px;"> Подождите пожалуйста идёт загрузка таблицы </p>');
+                    $("#btClick").css('pointer-events', 'none');
+
+                         $.ajax({
+                         url: '@Url.Action("GetTableRepair", "Login")',
+                         dataType: "html",
+                             data: {
+                                 NameUser: $("#ListName").val(),
+                                 NameOrder: $("#ListOrder").val(),
+                                 date_st: $("#date_st").val() + " " + $("#time_st").val(),
+                                 date_end: $("#date_end").val() + " " + $("#time_end").val(),
+                             },
+                             success: function (data) {                             
+                                 $("#Table").html(data);
+                                 $("#btClick").css('pointer-events', 'auto');
+
+                             
+                         },
+                         error: function (xhr, status, error) {
+                             alert(xhr);
+                             alert(status);
+                             alert(error);
+                         }
+                      })
+
+
+              
+            });
+</script>
+
+<style>
+
+    .buttonss {
+        display: block;
+        width: 22%;
+        margin: 1%;
+        border: 1px solid white;
+        align-items: center;
+        text-align: center;
+        align-content: center;
+        justify-content: left;
+    }
+
+    body {
+        background-color: lightgray;
+    }
+
+    .dates {
+        border: 1px dashed black;
+        background-color: white;
+        margin: 1%;
+        text-align: center;
+        font-size: 25px;
+        display: block;
+    }
+</style>
